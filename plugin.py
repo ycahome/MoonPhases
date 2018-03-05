@@ -13,7 +13,7 @@ Version:    1.0.0: Initial Version
         <param field="Mode1" label="WU Key" width="200px" required="true" default="5ea448da70b1136f"/>
         <param field="Mode2" label="CountryCode" width="100px" required="true" default="fr"/>
         <param field="Mode3" label="City" width="300px" required="true" default="paris"/>
-      <param field="Mode4" label="Polling interval (minutes)" width="40px" required="true" default="2"/>
+        <param field="Mode4" label="Polling interval (minutes)" width="40px" required="true" default="2"/>
         <param field="Mode6" label="Debug" width="75px">
             <options>
                 <option label="True" value="Debug"/>
