@@ -1,9 +1,9 @@
-# turn moon right way up for images kindly provided for domoticz plugin
 # see  http://www.domoticz.com/forum/viewtopic.php?f=65&t=21993
 # ross lazarus me fecit march 10 2018
 # added updated icons.txt
 # rlazarus@rosshp:/tmp/mp$ cat MoonPhases1NM/icons.txt
 # MoonPhases1NM;MoonPhases1NM;NewMoon MoonPhases
+# NOT part of plugin - can be removed but here for historical purposes...
 
 import os
 prefix = 'SH'
@@ -28,8 +28,8 @@ for f in flist:
         newname = '%s_%s' % (prefix,pname)
         os.system('convert -rotate "180" ./%s ./%s' % (pname,newname))
         print 'rotated',pname,'to',newname
-    ico = open('icons.txt','r').readlines()
-    lnew = [x for x in ico.split(';')]
+    ico = open('icons.txt','r').read()
+    lnew = ico.split(';')
     lnew[0] = '%s_%s' % (prefix,lnew[0])
     lnew[1] = lnew[0] # same..
     newico = ';'.join(lnew)
@@ -38,4 +38,5 @@ for f in flist:
     ico.close()
     os.system('zip ../%s_%s %s_%s*.png icons.txt' % (prefix,dname,prefix,dname))
     print 'Added SH images to',dname
+
 
