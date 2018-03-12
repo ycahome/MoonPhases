@@ -10,9 +10,9 @@ Version:    1.0.1: Southern hemisphere moon images
 """
 <plugin key="MoonPhases" name="Moon Phases" author="ycahome ft. jackslayter" version="1.0.0" wikilink="http://www.domoticz.com/wiki/plugins/" externallink="http://www.domoticz.com/forum/viewtopic.php?f=65&t=21993">
     <params>
-        <param field="Mode1" label="WU Key" width="200px" required="true" default="your_Wunderground_key"/>
-        <param field="Mode2" label="CountryCode" width="100px" required="true" default="au"/>
-        <param field="Mode3" label="City" width="300px" required="true" default="sydney"/>
+        <param field="Mode1" label="WU Key" width="200px" required="true" default="PutYourKeyHere"/>
+        <param field="Mode2" label="CountryCode" width="100px" required="true" default="fr"/>
+        <param field="Mode3" label="City" width="300px" required="true" default="paris"/>
         <param field="Mode4" label="Polling interval (minutes)" width="40px" required="true" default="2"/>
         <param field="Mode6" label="Debug" width="75px">
             <options>
@@ -105,9 +105,11 @@ class BasePlugin:
         now = datetime.now()
         if now >= self.nextupdate:
             self.nextupdate = now + timedelta(minutes=self.pollinterval)
+
             u =  "http://api.wunderground.com/api/%s/astronomy/q/%s/%s.json"  % (Parameters["Mode1"],Parameters["Mode2"],Parameters["Mode3"])
             data = json.loads(urllib.request.urlopen(u).read().decode('ascii'))
             Domoticz.Log('Moon URL:%s' % u)
+
             lune = data['moon_phase']['phaseofMoon']
             luneage = data['moon_phase']['ageOfMoon']
             self.southern_hemi = (data['moon_phase']['hemisphere'] == "South")
