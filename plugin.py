@@ -150,7 +150,7 @@ class BasePlugin:
                 datafr = '%s_%s' % (self.prefix,datafr)
             Domoticz.Debug("Setting Icon " + str(datafr))
             try:
-               Devices[1].Update(nValue=0, sValue=str(luneage), Image=Images[datafr].ID)
+               Devices[1].Update(nValue=0, Name=str(lune), sValue=str(luneage), Image=Images[datafr].ID)
             except:
                Domoticz.Error("Failed to update device unit 1 with value:" + str(lune))
         return
