@@ -10,7 +10,7 @@ Version:    1.0.0: Initial Version
 """
 <plugin key="MoonPhases" name="Moon Phases" author="ycahome ft. jackslayter" version="1.0.0" wikilink="http://www.domoticz.com/wiki/plugins/" externallink="http://www.domoticz.com/forum/viewtopic.php?f=65&t=21993">
     <params>
-        <param field="Mode1" label="WU Key" width="200px" required="true" default="5ea448da70b1136f"/>
+        <param field="Mode1" label="WU Key" width="200px" required="true" default="PutYourKeyHere"/>
         <param field="Mode2" label="CountryCode" width="100px" required="true" default="fr"/>
         <param field="Mode3" label="City" width="300px" required="true" default="paris"/>
         <param field="Mode4" label="Polling interval (minutes)" width="40px" required="true" default="2"/>
@@ -101,7 +101,6 @@ class BasePlugin:
         now = datetime.now()
         if now >= self.nextupdate:
             self.nextupdate = now + timedelta(minutes=self.pollinterval)
-            # data=json.loads(urllib.request.urlopen("http://api.wunderground.com/api/5ea448da70b1136f/astronomy/q/fr/paris.json").read().decode('ascii'))
             data = json.loads(urllib.request.urlopen(
                 "http://api.wunderground.com/api/" + Parameters["Mode1"] + "/astronomy/q/" + Parameters["Mode2"] + "/" +
                 Parameters["Mode3"] + ".json").read().decode('ascii'))
