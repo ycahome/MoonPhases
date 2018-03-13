@@ -3,17 +3,23 @@ MoonPhases Plugin
 
 Author: Ycahome, 2017 CREDITS TO jackslayter
 
+Version:    1.0.0: Initial Release
 Version:    1.0.1: Southern hemisphere moon images
 
 """
 
 """
-<plugin key="MoonPhases" name="Moon Phases" author="ycahome ft. jackslayter" version="1.0.0" wikilink="http://www.domoticz.com/wiki/plugins/" externallink="http://www.domoticz.com/forum/viewtopic.php?f=65&t=21993">
+<plugin key="MoonPhases" name="Moon Phases" author="ycahome ft. jackslayter" version="1.0.2" wikilink="http://www.domoticz.com/wiki/plugins/" externallink="http://www.domoticz.com/forum/viewtopic.php?f=65&t=21993">
+    <description>
+		<h3>----------------------------------------------------------------------</h3>
+		<h2>Python Plugin Manager v.1.5.1</h2><br/>
+		<h3>----------------------------------------------------------------------</h3>
+    </description>
     <params>
         <param field="Mode1" label="WU Key" width="200px" required="true" default="PutYourKeyHere"/>
         <param field="Mode2" label="CountryCode" width="100px" required="true" default="fr"/>
         <param field="Mode3" label="City" width="300px" required="true" default="paris"/>
-        <param field="Mode4" label="Polling interval (minutes)" width="40px" required="true" default="2"/>
+        <param field="Mode4" label="Polling interval (minutes)" width="40px" required="true" default="60"/>
         <param field="Mode6" label="Debug" width="75px">
             <options>
                 <option label="True" value="Debug"/>
@@ -53,15 +59,15 @@ class BasePlugin:
     def __init__(self):
         self.debug = False
         self.nextupdate = datetime.now()
-        self.pollinterval = 1440  # default polling interval in minutes
+        self.pollinterval = 60  # default polling interval in minutes
         self.error = False
         self.southern_hemi = False
         self.prefix = 'SH'
         return
 
     def onStart(self):
-        global icons
         Domoticz.Debug("onStart called")
+        global icons
         if Parameters["Mode6"] == 'Debug':
             self.debug = True
             Domoticz.Debugging(1)
@@ -102,6 +108,7 @@ class BasePlugin:
         Domoticz.Debugging(0)
 
     def onHeartbeat(self):
+        Domoticz.Debug("onStop called")
         now = datetime.now()
         if now >= self.nextupdate:
             self.nextupdate = now + timedelta(minutes=self.pollinterval)
@@ -120,6 +127,7 @@ class BasePlugin:
 
 
     def UpdateDevice(self, lune, luneage):
+        Domoticz.Debug("UpdateDevice called")
         # Make sure that the Domoticz device still exists (they can be deleted) before updating it
         datafr = ""
         if 1 in Devices:
