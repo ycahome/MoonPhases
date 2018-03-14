@@ -9,10 +9,10 @@ Version:    1.0.1: Southern hemisphere moon images
 """
 
 """
-<plugin key="MoonPhases" name="Moon Phases" author="ycahome ft. jackslayter" version="1.0.2" wikilink="http://www.domoticz.com/wiki/plugins/" externallink="http://www.domoticz.com/forum/viewtopic.php?f=65&t=21993">
+<plugin key="MoonPhases" name="Moon Phases" author="ycahome ft. jackslayter" version="1.0.3" wikilink="http://www.domoticz.com/wiki/plugins/" externallink="http://www.domoticz.com/forum/viewtopic.php?f=65&t=21993">
     <description>
 		<h3>----------------------------------------------------------------------</h3>
-		<h2>Python Plugin Manager v.1.5.1</h2><br/>
+		<h2>Moon Phases v.1.0.3</h2><br/>
 		<h3>----------------------------------------------------------------------</h3>
     </description>
     <params>
@@ -115,7 +115,7 @@ class BasePlugin:
 
             u =  "http://api.wunderground.com/api/%s/astronomy/q/%s/%s.json"  % (Parameters["Mode1"],Parameters["Mode2"],Parameters["Mode3"])
             data = json.loads(urllib.request.urlopen(u).read().decode('ascii'))
-            Domoticz.Log('Moon URL:%s' % u)
+            Domoticz.Debug('Moon URL:%s' % u)
 
             lune = data['moon_phase']['phaseofMoon']
             luneage = data['moon_phase']['ageOfMoon']
