@@ -5,12 +5,18 @@ Author: Ycahome, 2017 CREDITS TO jackslayter
 
 Version:    1.0.0: Initial Version
 Version:    1.0.1: Southern hemisphere moon images
+Version:    1.0.4: Changed icon/zip names to avoid underscores - something fishy in domoticz images or the python api
 
 """
 
 """
-<plugin key="MoonPhases" name="Moon Phases" author="ycahome ft. jackslayter" version="1.0.0" wikilink="http://www.domoticz.com/wiki/plugins/" externallink="http://www.domoticz.com/forum/viewtopic.php?f=65&t=21993">
-    <params>
+<plugin key="MoonPhases" name="Moon Phases" author="ycahome ft. jackslayter" version="1.0.0" wikilink="http://www.domoticz.com/wiki/plugins/" externallink="http://www.domoticz.com/forum/viewtopic.php?f=65&t=21993"><plugin key="MoonPhases" name="Moon Phases" author="ycahome ft. jackslayter" version="1.0.3" wikilink="http://www.domoticz.com/wiki/plugins/" externallink="http://www.domoticz.com/forum/viewtopic.php?f=65&t=21993">
+     <description>
+        <h3>----------------------------------------------------------------------</h3>
+        <h2>Moon Phases v.1.0.4</h2><br/>
+        <h3>----------------------------------------------------------------------</h3>
+     </description>
+     <params>
         <param field="Mode1" label="WU Key" width="200px" required="true" default="your_Wunderground_key"/>
         <param field="Mode2" label="CountryCode" width="100px" required="true" default="au"/>
         <param field="Mode3" label="City" width="300px" required="true" default="sydney"/>
