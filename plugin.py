@@ -3,6 +3,7 @@ MoonPhases Plugin
 
 Author: Ycahome, 2017 CREDITS TO jackslayter
 
+Version:    1.0.0: Initial Version
 Version:    1.0.1: Southern hemisphere moon images
 
 """
@@ -13,7 +14,7 @@ Version:    1.0.1: Southern hemisphere moon images
         <param field="Mode1" label="WU Key" width="200px" required="true" default="your_Wunderground_key"/>
         <param field="Mode2" label="CountryCode" width="100px" required="true" default="au"/>
         <param field="Mode3" label="City" width="300px" required="true" default="sydney"/>
-        <param field="Mode4" label="Polling interval (minutes)" width="40px" required="true" default="2"/>
+        <param field="Mode4" label="Polling interval (minutes)" width="40px" required="true" default="60"/>
         <param field="Mode6" label="Debug" width="75px">
             <options>
                 <option label="True" value="Debug"/>
@@ -72,28 +73,13 @@ class BasePlugin:
             Domoticz.Debugging(0)
 
         # load custom MoonPhase images
-        im = []
-        for i in Images:
-            im.append('%s=%s,%s' % (Images[i].ID,Images[i].Name,Images[i].Description))
-        ims = ';'.join(im)
-        Domoticz.Debug("onStart Images=" + str(ims))
         for key, value in icons.items():
             if key not in Images:
                 Domoticz.Image(value).Create()
                 Domoticz.Debug("Added icon: " + key + " from file " + value)
-            #else:
-            #    Images[key].Delete()
-            #    Domoticz.Image(value).Create()
-            #    Domoticz.Debug("Updated image: " + key + " to " + value)
         Domoticz.Debug("Number of icons loaded = " + str(len(Images)))
         for image in Images:
             Domoticz.Debug("Icon " + str(Images[image].ID) + " " + Images[image].Name)
-        im = []
-        for i in Images:
-            im.append('%s=%s,%s' % (Images[i].ID,Images[i].Name,Images[i].Description))
-        ims = ';'.join(im)
-        Domoticz.Debug("After Images=" + str(ims))
-
         # create the mandatory child device if it does not yet exist
         if 1 not in Devices:
             Domoticz.Device(Name="Status", Unit=1, TypeName="Custom",Options={"Custom": "1;Days"},Used=1).Create()
@@ -121,7 +107,7 @@ class BasePlugin:
         if now >= self.nextupdate:
             self.nextupdate = now + timedelta(minutes=self.pollinterval)
             u =  "http://api.wunderground.com/api/%s/astronomy/q/%s/%s.json"  % (Parameters["Mode1"],Parameters["Mode2"],Parameters["Mode3"])
-            Domoticz.Log('Moon URL:%s' % u)
+            Domoticz.Debug('Moon URL:%s' % u)
             data = json.loads(urllib.request.urlopen(u).read().decode('ascii'))
 
             lune = data['moon_phase']['phaseofMoon'].rstrip()
