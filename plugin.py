@@ -10,7 +10,9 @@ Version:    1.0.4: Changed icon/zip names to avoid underscores - something fishy
 """
 
 """
-<plugin key="MoonPhases" name="Moon Phases" author="ycahome ft. jackslayter" version="1.0.0" wikilink="http://www.domoticz.com/wiki/plugins/" externallink="http://www.domoticz.com/forum/viewtopic.php?f=65&t=21993"><plugin key="MoonPhases" name="Moon Phases" author="ycahome ft. jackslayter" version="1.0.3" wikilink="http://www.domoticz.com/wiki/plugins/" externallink="http://www.domoticz.com/forum/viewtopic.php?f=65&t=21993">
+<plugin key="MoonPhases" name="Moon Phases" author="ycahome ft. jackslayter"
+  version="1.0.0" wikilink="http://www.domoticz.com/wiki/plugins/"
+  externallink="http://www.domoticz.com/forum/viewtopic.php?f=65&t=21993">
      <description>
         <h3>----------------------------------------------------------------------</h3>
         <h2>Moon Phases v.1.0.4</h2><br/>
