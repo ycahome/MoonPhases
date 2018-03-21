@@ -3,7 +3,7 @@ MoonPhases Plugin
 
 Author: Ycahome, 2017 CREDITS TO jackslayter
 
-Version:    1.0.0: Initial Version
+Version:    1.0.0: Initial Release
 Version:    1.0.1: Southern hemisphere moon images
 Version:    1.0.4: Changed icon/zip names to avoid underscores - something fishy in domoticz images or the python api
 
@@ -63,7 +63,7 @@ class BasePlugin:
     def __init__(self):
         self.debug = False
         self.nextupdate = datetime.now()
-        self.pollinterval = 1440  # default polling interval in minutes
+        self.pollinterval = 60  # default polling interval in minutes
         self.error = False
         self.southern_hemi = False
         self.suffix= 'SH'
@@ -71,8 +71,8 @@ class BasePlugin:
         return
 
     def onStart(self):
-        global icons
         Domoticz.Debug("onStart called")
+        global icons
         if Parameters["Mode6"] == 'Debug':
             self.debug = True
             Domoticz.Debugging(1)
@@ -111,13 +111,13 @@ class BasePlugin:
         Domoticz.Debugging(0)
 
     def onHeartbeat(self):
+        Domoticz.Debug("onStop called")
         now = datetime.now()
         if now >= self.nextupdate:
             self.nextupdate = now + timedelta(minutes=self.pollinterval)
             u =  "http://api.wunderground.com/api/%s/astronomy/q/%s/%s.json"  % (Parameters["Mode1"],Parameters["Mode2"],Parameters["Mode3"])
             Domoticz.Debug('Moon URL:%s' % u)
             data = json.loads(urllib.request.urlopen(u).read().decode('ascii'))
-
             lune = data['moon_phase']['phaseofMoon'].rstrip()
             luneage = data['moon_phase']['ageOfMoon'].strip()
             self.southern_hemi = (data['moon_phase']['hemisphere'].rstrip() == "South")
@@ -128,6 +128,7 @@ class BasePlugin:
 
 
     def UpdateDevice(self, lune, luneage):
+        Domoticz.Debug("UpdateDevice called")
         # Make sure that the Domoticz device still exists (they can be deleted) before updating it
         datafr = ""
         if 1 in Devices:
