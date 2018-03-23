@@ -5,20 +5,23 @@ Author: Ycahome, 2017 CREDITS TO jackslayter
 
 Version:    1.0.0: Initial Release
 Version:    1.0.1: Southern hemisphere moon images
+Version:    1.0.4: Changed icon/zip names to avoid underscores - something fishy in domoticz images or the python api
 
 """
 
 """
-<plugin key="MoonPhases" name="Moon Phases" author="ycahome ft. jackslayter" version="1.0.3" wikilink="http://www.domoticz.com/wiki/plugins/" externallink="http://www.domoticz.com/forum/viewtopic.php?f=65&t=21993">
-    <description>
-		<h3>----------------------------------------------------------------------</h3>
-		<h2>Moon Phases v.1.0.3</h2><br/>
-		<h3>----------------------------------------------------------------------</h3>
-    </description>
-    <params>
-        <param field="Mode1" label="WU Key" width="200px" required="true" default="PutYourKeyHere"/>
-        <param field="Mode2" label="CountryCode" width="100px" required="true" default="fr"/>
-        <param field="Mode3" label="City" width="300px" required="true" default="paris"/>
+<plugin key="MoonPhases" name="Moon Phases" author="ycahome ft. jackslayter"
+  version="1.0.0" wikilink="http://www.domoticz.com/wiki/plugins/"
+  externallink="http://www.domoticz.com/forum/viewtopic.php?f=65&t=21993">
+     <description>
+        <h3>----------------------------------------------------------------------</h3>
+        <h2>Moon Phases v.1.0.4</h2><br/>
+        <h3>----------------------------------------------------------------------</h3>
+     </description>
+     <params>
+        <param field="Mode1" label="WU Key" width="200px" required="true" default="your_Wunderground_key"/>
+        <param field="Mode2" label="CountryCode" width="100px" required="true" default="au"/>
+        <param field="Mode3" label="City" width="300px" required="true" default="sydney"/>
         <param field="Mode4" label="Polling interval (minutes)" width="40px" required="true" default="60"/>
         <param field="Mode6" label="Debug" width="75px">
             <options>
@@ -36,6 +39,7 @@ import json
 from datetime import datetime
 from datetime import timedelta
 
+
 icons = {"MoonPhases1NM": "MoonPhases1NM.zip",
          "MoonPhases2WC": "MoonPhases2WC.zip",
          "MoonPhases3FQ": "MoonPhases3FQ.zip",
@@ -44,14 +48,14 @@ icons = {"MoonPhases1NM": "MoonPhases1NM.zip",
          "MoonPhases6WG": "MoonPhases6WG.zip",
          "MoonPhases7LQ": "MoonPhases7LQ.zip",
          "MoonPhases8WC": "MoonPhases8WC.zip",
-         "SH_MoonPhases1NM": "SH_MoonPhases1NM.zip",
-         "SH_MoonPhases2WC": "SH_MoonPhases2WC.zip",
-         "SH_MoonPhases3FQ": "SH_MoonPhases3FQ.zip",
-         "SH_MoonPhases4WG": "SH_MoonPhases4WG.zip",
-         "SH_MoonPhases5FM": "SH_MoonPhases5FM.zip",
-         "SH_MoonPhases6WG": "SH_MoonPhases6WG.zip",
-         "SH_MoonPhases7LQ": "SH_MoonPhases7LQ.zip",
-         "SH_MoonPhases8WC": "SH_MoonPhases8WC.zip"}
+         "MoonPhases1NMSH": "MoonPhases1NMSH.zip",
+         "MoonPhases2WCSH": "MoonPhases2WCSH.zip",
+         "MoonPhases3FQSH": "MoonPhases3FQSH.zip",
+         "MoonPhases4WGSH": "MoonPhases4WGSH.zip",
+         "MoonPhases5FMSH": "MoonPhases5FMSH.zip",
+         "MoonPhases6WGSH": "MoonPhases6WGSH.zip",
+         "MoonPhases7LQSH": "MoonPhases7LQSH.zip",
+         "MoonPhases8WCSH": "MoonPhases8WCSH.zip"}
 
 
 class BasePlugin:
@@ -62,7 +66,8 @@ class BasePlugin:
         self.pollinterval = 60  # default polling interval in minutes
         self.error = False
         self.southern_hemi = False
-        self.prefix = 'SH'
+        self.suffix= 'SH'
+        self.reload = True
         return
 
     def onStart(self):
@@ -83,8 +88,6 @@ class BasePlugin:
         Domoticz.Debug("Number of icons loaded = " + str(len(Images)))
         for image in Images:
             Domoticz.Debug("Icon " + str(Images[image].ID) + " " + Images[image].Name)
-
-
         # create the mandatory child device if it does not yet exist
         if 1 not in Devices:
             Domoticz.Device(Name="Status", Unit=1, TypeName="Custom",Options={"Custom": "1;Days"},Used=1).Create()
@@ -112,14 +115,12 @@ class BasePlugin:
         now = datetime.now()
         if now >= self.nextupdate:
             self.nextupdate = now + timedelta(minutes=self.pollinterval)
-
             u =  "http://api.wunderground.com/api/%s/astronomy/q/%s/%s.json"  % (Parameters["Mode1"],Parameters["Mode2"],Parameters["Mode3"])
-            data = json.loads(urllib.request.urlopen(u).read().decode('ascii'))
             Domoticz.Debug('Moon URL:%s' % u)
-
-            lune = data['moon_phase']['phaseofMoon']
-            luneage = data['moon_phase']['ageOfMoon']
-            self.southern_hemi = (data['moon_phase']['hemisphere'] == "South")
+            data = json.loads(urllib.request.urlopen(u).read().decode('ascii'))
+            lune = data['moon_phase']['phaseofMoon'].rstrip()
+            luneage = data['moon_phase']['ageOfMoon'].strip()
+            self.southern_hemi = (data['moon_phase']['hemisphere'].rstrip() == "South")
             Domoticz.Log("Moon Phase:"+str(lune))
             Domoticz.Log("Moon Age:"+str(luneage))
             self.UpdateDevice(lune,luneage)
@@ -157,12 +158,13 @@ class BasePlugin:
                 phase = 8
 
             if self.southern_hemi:
-                datafr = '%s_%s' % (self.prefix,datafr)
+                datafr = '%s%s' % (datafr,self.suffix)
             Domoticz.Debug("Setting Icon " + str(datafr))
             try:
                Devices[1].Update(nValue=0, Name=str(lune), sValue=str(luneage), Image=Images[datafr].ID)
             except:
-               Domoticz.Error("Failed to update device unit 1 with value:" + str(lune))
+               Domoticz.Error("Failed to update device unit 1 with values %s:%s:" % (lune,luneage))
+
         return
 
 
