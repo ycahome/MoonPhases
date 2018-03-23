@@ -15,7 +15,7 @@ Version:    1.0.4: Changed icon/zip names to avoid underscores - something fishy
   externallink="http://www.domoticz.com/forum/viewtopic.php?f=65&t=21993">
      <description>
         <h3>----------------------------------------------------------------------</h3>
-        <h2>Moon Phases v.1.0.4</h2><br/>
+        <h2>Moon Phases v.1.0.4 </h2><br/>
         <h3>----------------------------------------------------------------------</h3>
      </description>
      <params>
