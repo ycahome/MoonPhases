@@ -15,7 +15,7 @@ Version:    1.0.4: Changed icon/zip names to avoid underscores - something fishy
   externallink="http://www.domoticz.com/forum/viewtopic.php?f=65&t=21993">
      <description>
         <h3>----------------------------------------------------------------------</h3>
-        <h2>Moon Phases v.1.0.4 </h2><br/>
+        <h2>Moon Phases v.1.0.5</h2><br/>
         <h3>----------------------------------------------------------------------</h3>
      </description>
      <params>
@@ -162,6 +162,7 @@ class BasePlugin:
             Domoticz.Debug("Setting Icon " + str(datafr))
             try:
                Devices[1].Update(nValue=0, Name=str(lune), sValue=str(luneage), Image=Images[datafr].ID)
+               Devices[1].Update(nValue=0, sValue=str(luneage), Image=Images[datafr].ID)
             except:
                Domoticz.Error("Failed to update device unit 1 with values %s:%s:" % (lune,luneage))
 
