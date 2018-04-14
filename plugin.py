@@ -111,7 +111,7 @@ class BasePlugin:
         Domoticz.Debugging(0)
 
     def onHeartbeat(self):
-        Domoticz.Debug("onStop called")
+        Domoticz.Debug("onHeartbeat called")
         now = datetime.now()
         if now >= self.nextupdate:
             self.nextupdate = now + timedelta(minutes=self.pollinterval)
@@ -159,10 +159,10 @@ class BasePlugin:
 
             if self.southern_hemi:
                 datafr = '%s%s' % (datafr,self.suffix)
-            Domoticz.Debug("Setting Icon " + str(datafr))
+            titl = "1;Days, %s" % lune
+            Domoticz.Debug("Setting Custom to" + titl +  ", Icon to " + str(datafr))
             try:
-               Devices[1].Update(nValue=0, Name=str(lune), sValue=str(luneage), Image=Images[datafr].ID)
-               Devices[1].Update(nValue=0, sValue=str(luneage), Image=Images[datafr].ID)
+               Devices[1].Update(nValue=0,  sValue=str(luneage), Image=Images[datafr].ID, Options={"Custom": titl})
             except:
                Domoticz.Error("Failed to update device unit 1 with values %s:%s:" % (lune,luneage))
 
